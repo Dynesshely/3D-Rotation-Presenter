@@ -6,9 +6,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="MainWindow"
         Width="1000"
-        Height="735"
+        Height="740"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="RotateSlider" TargetType="Slider">
+            <Setter Property="AutoToolTipPlacement" Value="BottomRight"/>
+            <Setter Property="AutoToolTipPrecision" Value="2"/>
+            <Setter Property="LargeChange" Value="1"/>
+            <Setter Property="Maximum" Value="180"/>
+            <Setter Property="Minimum" Value="-180"/>
+            <Setter Property="SmallChange" Value="0.1"/>
+            <Setter Property="TickFrequency" Value="15"/>
+            <Setter Property="TickPlacement" Value="TopLeft"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="700"/>
@@ -21,9 +34,63 @@
                 Margin="25"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Background="Black">
+                Background="Black"
+                ClipToBounds="True">
 
         </Canvas>
+        <StackPanel Grid.Column="1" Margin="20">
+            <Button x:Name="ClearButton"
+                    Margin="5"
+                    Click="ClearButton_Click"
+                    Content="Clear"/>
+            <Button x:Name="ForceDrawButton"
+                    Margin="5"
+                    Click="ForceDrawButton_Click"
+                    Content="Force Draw"/>
+            <Label Margin="5" Content="width"/>
+            <TextBox x:Name="obj_width_input"
+                     Margin="5"
+                     Text="180"/>
+            <Label Margin="5" Content="length"/>
+            <TextBox x:Name="obj_length_input"
+                     Margin="5"
+                     Text="320"/>
+            <Button x:Name="SetObjSizeButton"
+                    Margin="5"
+                    Click="SetObjSizeButton_Click"
+                    Content="Set"/>
 
+            <Button x:Name="ResetRotationButton"
+                    Margin="5"
+                    Click="ResetRotationButton_Click"
+                    Content="Reset Rotation"/>
+
+            <Label Margin="5" Content="Yaw (Z)"/>
+            <Slider x:Name="yaw_slider"
+                    Style="{StaticResource RotateSlider}"
+                    ValueChanged="Yaw_slider_ValueChanged"
+                    Value="0"/>
+            <TextBox Margin="5"
+                     IsReadOnly="True"
+                     Text="{Binding Value, ElementName=yaw_slider}"/>
+
+            <Label Margin="5" Content="Pitch (X)"/>
+            <Slider x:Name="pitch_slider"
+                    Style="{StaticResource RotateSlider}"
+                    Value="0"/>
+            <TextBox Margin="5"
+                     IsReadOnly="True"
+                     Text="{Binding Value, ElementName=pitch_slider}"/>
+
+            <Label Margin="5" Content="Roll (Y)"/>
+            <Slider x:Name="roll_slider"
+                    Style="{StaticResource RotateSlider}"
+                    Value="0"/>
+            <TextBox Margin="5"
+                     IsReadOnly="True"
+                     Text="{Binding Value, ElementName=roll_slider}"/>
+
+            <Button Margin="5" Content="Rotate"/>
+        </StackPanel>
     </Grid>
 </Window>
