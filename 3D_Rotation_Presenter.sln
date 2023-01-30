@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D_Rotation_Presenter", "3D_Rotation_Presenter\3D_Rotation_Presenter.csproj", "{2A2F4D94-0633-4E46-B7F1-89AA0C97E251}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A2F4D94-0633-4E46-B7F1-89AA0C97E251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A2F4D94-0633-4E46-B7F1-89AA0C97E251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A2F4D94-0633-4E46-B7F1-89AA0C97E251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A2F4D94-0633-4E46-B7F1-89AA0C97E251}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {464014FE-0149-417D-B690-B555320BC35D}
+	EndGlobalSection
+EndGlobal
