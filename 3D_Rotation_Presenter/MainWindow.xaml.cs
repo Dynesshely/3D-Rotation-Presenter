@@ -38,77 +38,147 @@ namespace _3D_Rotation_Presenter
 
         private static readonly SolidColorBrush main_brush = new(Colors.Red);
 
-        private static (double, double) Rotate2D((double, double) a, (double, double) o, double angle)
+        private static readonly SolidColorBrush secondary_brush = new(Colors.Green);
+
+        //private static (double, double) origin = (0, 0);
+
+        //private static (double, double) YawRotate((double, double) a, (double, double) o, double angle)
+        //{
+        //    angle = -angle;
+        //    var sin = Math.Sin(Math.PI / 180 * angle);
+        //    var cos = Math.Cos(Math.PI / 180 * angle);
+        //    (double, double) b = new()
+        //    {
+        //        Item1 = (a.Item1 - o.Item1) * cos - (a.Item2 - o.Item2) * sin + o.Item1,
+        //        Item2 = (a.Item1 - o.Item1) * sin + (a.Item2 - o.Item2) * cos + o.Item2
+        //    };
+        //    return b;
+        //}
+
+        //private (double, double) Corner_lt
+        //{
+        //    get
+        //    {
+        //        var source = (-obj_width.Half(), obj_length.Half());
+        //        var yaw_angle = yaw_slider.Value;
+        //        var pitch_angle = pitch_slider.Value;
+        //        var roll_angle = roll_slider.Value;
+
+        //        //  Yaw
+        //        var result = YawRotate(source, origin, yaw_angle);
+
+        //        //  Pitch
+        //        if (pitch_angle > 0)
+        //        {
+
+        //        }
+        //        else
+        //        {
+
+        //        }
+
+        //        return result;
+        //    }
+        //}
+
+        //private (double, double) Corner_rt
+        //{
+        //    get
+        //    {
+        //        var source = (obj_width.Half(), obj_length.Half());
+        //        var yaw_angle = yaw_slider.Value;
+        //        var pitch_angle = pitch_slider.Value;
+        //        var roll_angle = roll_slider.Value;
+
+        //        //  Yaw
+        //        var result = YawRotate(source, origin, yaw_angle);
+
+        //        return result;
+        //    }
+        //}
+
+        //private (double, double) Corner_lb
+        //{
+        //    get
+        //    {
+        //        var source = (-obj_width.Half(), -obj_length.Half());
+        //        var yaw_angle = yaw_slider.Value;
+        //        var pitch_angle = pitch_slider.Value;
+        //        var roll_angle = roll_slider.Value;
+
+        //        //  Yaw
+        //        var result = YawRotate(source, origin, yaw_angle);
+
+        //        return result;
+        //    }
+        //}
+
+        //private (double, double) Corner_rb
+        //{
+        //    get
+        //    {
+        //        var source = (obj_width.Half(), -obj_length.Half());
+        //        var yaw_angle = yaw_slider.Value;
+        //        var pitch_angle = pitch_slider.Value;
+        //        var roll_angle = roll_slider.Value;
+
+        //        //  Yaw
+        //        var origin = (0, 0);
+        //        var result = YawRotate(source, origin, yaw_angle);
+
+        //        return result;
+        //    }
+        //}
+
+
+
+        private Point Corner_lt => new Point()
         {
-            angle = -angle;
-            var sin = Math.Sin(Math.PI / 180 * angle);
-            var cos = Math.Cos(Math.PI / 180 * angle);
-            (double, double) b = new()
-            {
-                Item1 = (a.Item1 - o.Item1) * cos - (a.Item2 - o.Item2) * sin + o.Item1,
-                Item2 = (a.Item1 - o.Item1) * sin + (a.Item2 - o.Item2) * cos + o.Item2
-            };
-            return b;
+            X = -obj_width.Half(),
+            Y = obj_length.Half(),
+            Z = 0,
         }
+        .Z_Rotate(yaw_slider.Value)
+        .Y_Rotate(pitch_slider.Value)
+        .X_Rotate(roll_slider.Value);
 
-        private (double, double) Corner_lt
+        private Point Corner_rt => new Point()
         {
-            get
-            {
-                var source = (-obj_width.Half(), obj_length.Half());
-
-                //  Yaw
-                var origin = (0, 0);
-                var result = Rotate2D(source, origin, yaw_slider.Value);
-
-                return result;
-            }
+            X = obj_width.Half(),
+            Y = obj_length.Half(),
+            Z = 0,
         }
+        .Z_Rotate(yaw_slider.Value)
+        .Y_Rotate(pitch_slider.Value)
+        .X_Rotate(roll_slider.Value);
 
-        private (double, double) Corner_rt
+        private Point Corner_lb => new Point()
         {
-            get
-            {
-                var source = (obj_width.Half(), obj_length.Half());
-
-                //  Yaw
-                var origin = (0, 0);
-                var result = Rotate2D(source, origin, yaw_slider.Value);
-
-                return result;
-            }
+            X = -obj_width.Half(),
+            Y = -obj_length.Half(),
+            Z = 0,
         }
+        .Z_Rotate(yaw_slider.Value)
+        .Y_Rotate(pitch_slider.Value)
+        .X_Rotate(roll_slider.Value);
 
-        private (double, double) Corner_lb
+        private Point Corner_rb => new Point()
         {
-            get
-            {
-                var source = (-obj_width.Half(), -obj_length.Half());
-
-                //  Yaw
-                var origin = (0, 0);
-                var result = Rotate2D(source, origin, yaw_slider.Value);
-
-                return result;
-            }
+            X = obj_width.Half(),
+            Y = -obj_length.Half(),
+            Z = 0,
         }
-
-        private (double, double) Corner_rb
-        {
-            get
-            {
-                var source = (obj_width.Half(), -obj_length.Half());
-
-                //  Yaw
-                var origin = (0, 0);
-                var result = Rotate2D(source, origin, yaw_slider.Value);
-
-                return result;
-            }
-        }
+        .Z_Rotate(yaw_slider.Value)
+        .Y_Rotate(pitch_slider.Value)
+        .X_Rotate(roll_slider.Value);
 
         private void Draw()
         {
+            //Connect(Corner_lt, Corner_rt);
+            //Connect(Corner_lb, Corner_rb);
+            //Connect(Corner_lt, Corner_lb);
+            //Connect(Corner_rt, Corner_rb);
+
             Connect(Corner_lt, Corner_rt);
             Connect(Corner_lb, Corner_rb);
             Connect(Corner_lt, Corner_lb);
@@ -116,6 +186,8 @@ namespace _3D_Rotation_Presenter
         }
 
         private void Clear() => MainCanvas.Children.Clear();
+
+        private void Connect(Point p1, Point p2) => Connect((p1.X, p1.Y), (p2.X, p2.Y));
 
         private void Connect((double, double) p1, (double, double) p2)
             => Connect(p1.Item1, p1.Item2, p2.Item1, p2.Item2);
@@ -149,7 +221,7 @@ namespace _3D_Rotation_Presenter
 
         private void ClearButton_Click(object sender, RoutedEventArgs e) => Clear();
 
-        private void Yaw_slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void Rotation_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Clear();
             Draw();
@@ -163,7 +235,7 @@ namespace _3D_Rotation_Presenter
         }
     }
 
-    public static class Extensions
+    public static partial class Extensions
     {
         public static double ToCenter(this double n, double relate, bool isY = false)
             =>
