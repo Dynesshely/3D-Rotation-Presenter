@@ -40,98 +40,6 @@ namespace _3D_Rotation_Presenter
 
         private static readonly SolidColorBrush secondary_brush = new(Colors.Green);
 
-        //private static (double, double) origin = (0, 0);
-
-        //private static (double, double) YawRotate((double, double) a, (double, double) o, double angle)
-        //{
-        //    angle = -angle;
-        //    var sin = Math.Sin(Math.PI / 180 * angle);
-        //    var cos = Math.Cos(Math.PI / 180 * angle);
-        //    (double, double) b = new()
-        //    {
-        //        Item1 = (a.Item1 - o.Item1) * cos - (a.Item2 - o.Item2) * sin + o.Item1,
-        //        Item2 = (a.Item1 - o.Item1) * sin + (a.Item2 - o.Item2) * cos + o.Item2
-        //    };
-        //    return b;
-        //}
-
-        //private (double, double) Corner_lt
-        //{
-        //    get
-        //    {
-        //        var source = (-obj_width.Half(), obj_length.Half());
-        //        var yaw_angle = yaw_slider.Value;
-        //        var pitch_angle = pitch_slider.Value;
-        //        var roll_angle = roll_slider.Value;
-
-        //        //  Yaw
-        //        var result = YawRotate(source, origin, yaw_angle);
-
-        //        //  Pitch
-        //        if (pitch_angle > 0)
-        //        {
-
-        //        }
-        //        else
-        //        {
-
-        //        }
-
-        //        return result;
-        //    }
-        //}
-
-        //private (double, double) Corner_rt
-        //{
-        //    get
-        //    {
-        //        var source = (obj_width.Half(), obj_length.Half());
-        //        var yaw_angle = yaw_slider.Value;
-        //        var pitch_angle = pitch_slider.Value;
-        //        var roll_angle = roll_slider.Value;
-
-        //        //  Yaw
-        //        var result = YawRotate(source, origin, yaw_angle);
-
-        //        return result;
-        //    }
-        //}
-
-        //private (double, double) Corner_lb
-        //{
-        //    get
-        //    {
-        //        var source = (-obj_width.Half(), -obj_length.Half());
-        //        var yaw_angle = yaw_slider.Value;
-        //        var pitch_angle = pitch_slider.Value;
-        //        var roll_angle = roll_slider.Value;
-
-        //        //  Yaw
-        //        var result = YawRotate(source, origin, yaw_angle);
-
-        //        return result;
-        //    }
-        //}
-
-        //private (double, double) Corner_rb
-        //{
-        //    get
-        //    {
-        //        var source = (obj_width.Half(), -obj_length.Half());
-        //        var yaw_angle = yaw_slider.Value;
-        //        var pitch_angle = pitch_slider.Value;
-        //        var roll_angle = roll_slider.Value;
-
-        //        //  Yaw
-        //        var origin = (0, 0);
-        //        var result = YawRotate(source, origin, yaw_angle);
-
-        //        return result;
-        //    }
-        //}
-
-
-
         private Point Corner_lt => new Point()
         {
             X = -obj_width.Half(),
@@ -174,11 +82,6 @@ namespace _3D_Rotation_Presenter
 
         private void Draw()
         {
-            //Connect(Corner_lt, Corner_rt);
-            //Connect(Corner_lb, Corner_rb);
-            //Connect(Corner_lt, Corner_lb);
-            //Connect(Corner_rt, Corner_rb);
-
             Connect(Corner_lt, Corner_rt);
             Connect(Corner_lb, Corner_rb);
             Connect(Corner_lt, Corner_lb);
