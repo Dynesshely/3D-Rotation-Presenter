@@ -43,7 +43,7 @@ namespace _3D_Rotation_Presenter
         private (double, double, double) RotationAngles
             => (yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
 
-        private Point Camera => new Point()
+        private static Point Camera => new()
         {
             X = 0,
             Y = 0,
@@ -178,6 +178,12 @@ namespace _3D_Rotation_Presenter
             yaw_slider.Value = 0;
             pitch_slider.Value = 0;
             roll_slider.Value = 0;
+        }
+
+        private void Camera_input_height_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (int.TryParse(camera_input_height.Text, out int z))
+                Camera.Z = z;
         }
     }
 

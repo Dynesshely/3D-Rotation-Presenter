@@ -47,18 +47,27 @@
                     Margin="5"
                     Click="ForceDrawButton_Click"
                     Content="Force Draw"/>
-            <Label Margin="5" Content="width"/>
+
+            <Label Margin="5" Content="Phone Width"/>
             <TextBox x:Name="obj_width_input"
                      Margin="5"
                      Text="180"/>
-            <Label Margin="5" Content="length"/>
+
+            <Label Margin="5" Content="Phone Length"/>
             <TextBox x:Name="obj_length_input"
                      Margin="5"
                      Text="320"/>
+
             <Button x:Name="SetObjSizeButton"
                     Margin="5"
                     Click="SetObjSizeButton_Click"
                     Content="Set"/>
+
+            <Label Margin="5" Content="Camera Height (0, 0, z)"/>
+            <TextBox x:Name="camera_input_height"
+                     Margin="5"
+                     Text="800"
+                     TextChanged="Camera_input_height_TextChanged"/>
 
             <Button x:Name="ResetRotationButton"
                     Margin="5"
