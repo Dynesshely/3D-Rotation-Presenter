@@ -40,13 +40,23 @@ namespace _3D_Rotation_Presenter
 
         private static readonly SolidColorBrush secondary_brush = new(Colors.Green);
 
+        private (double, double, double) RotationAngles
+            => (yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+
+        private Point Camera => new Point()
+        {
+            X = 0,
+            Y = 0,
+            Z = 800
+        };
+
         private Point Bottom_Bar_Left => new Point()
         {
             X = -obj_width.Half() + obj_width / 9,
             Y = -obj_length.Half() + obj_length / 16,
             Z = 0
         }
-        .Rotate(yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+        .Rotate(RotationAngles);
 
         private Point Bottom_Bar_Right => new Point()
         {
@@ -54,7 +64,7 @@ namespace _3D_Rotation_Presenter
             Y = -obj_length.Half() + obj_length / 16,
             Z = 0
         }
-        .Rotate(yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+        .Rotate(RotationAngles);
 
         private Point Corner_lt => new Point()
         {
@@ -62,7 +72,7 @@ namespace _3D_Rotation_Presenter
             Y = obj_length.Half(),
             Z = 0,
         }
-        .Rotate(yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+        .Rotate(RotationAngles);
 
         private Point Corner_rt => new Point()
         {
@@ -70,7 +80,7 @@ namespace _3D_Rotation_Presenter
             Y = obj_length.Half(),
             Z = 0,
         }
-        .Rotate(yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+        .Rotate(RotationAngles);
 
         private Point Corner_lb => new Point()
         {
@@ -78,7 +88,7 @@ namespace _3D_Rotation_Presenter
             Y = -obj_length.Half(),
             Z = 0,
         }
-        .Rotate(yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+        .Rotate(RotationAngles);
 
         private Point Corner_rb => new Point()
         {
@@ -86,7 +96,7 @@ namespace _3D_Rotation_Presenter
             Y = -obj_length.Half(),
             Z = 0,
         }
-        .Rotate(yaw_slider.Value, pitch_slider.Value, roll_slider.Value);
+        .Rotate(RotationAngles);
 
         private void Draw()
         {
@@ -94,16 +104,36 @@ namespace _3D_Rotation_Presenter
             var rollAngle = roll_slider.Value;
             var isBack = pitchAngle.Abs() > 90 || rollAngle.Abs() > 90;
             var nowBrush = isBack ? secondary_brush : main_brush;
-            Connect(Corner_lt, Corner_rt, nowBrush);
-            Connect(Corner_lb, Corner_rb, nowBrush);
-            Connect(Corner_lt, Corner_lb, nowBrush);
-            Connect(Corner_rt, Corner_rb, nowBrush);
-            Connect(Bottom_Bar_Left, Bottom_Bar_Right, nowBrush);
+
+            var a = Corner_lt.GetCrossPoint(Camera, null, null);
+            var b = Corner_rt.GetCrossPoint(Camera, null, null);
+            var c = Corner_rb.GetCrossPoint(Camera, null, null);
+            var d = Corner_lb.GetCrossPoint(Camera, null, null);
+            var e = Bottom_Bar_Left.GetCrossPoint(Camera, null, null);
+            var f = Bottom_Bar_Right.GetCrossPoint(Camera, null, null);
+
+            if (a is not null && b is not null)
+                Connect(a, b, nowBrush);
+            if (b is not null && c is not null)
+                Connect(b, c, nowBrush);
+            if (c is not null && d is not null)
+                Connect(c, d, nowBrush);
+            if (a is not null && d is not null)
+                Connect(a, d, nowBrush);
+            if (e is not null && f is not null)
+                Connect(e, f, nowBrush);
+
+            //Connect(Corner_lt, Corner_rt, nowBrush);
+            //Connect(Corner_lb, Corner_rb, nowBrush);
+            //Connect(Corner_lt, Corner_lb, nowBrush);
+            //Connect(Corner_rt, Corner_rb, nowBrush);
+            //Connect(Bottom_Bar_Left, Bottom_Bar_Right, nowBrush);
         }
 
         private void Clear() => MainCanvas.Children.Clear();
 
-        private void Connect(Point p1, Point p2, Brush brush) => Connect((p1.X, p1.Y), (p2.X, p2.Y), brush);
+        private void Connect(Point p1, Point p2, Brush brush)
+            => Connect((p1.X, p1.Y), (p2.X, p2.Y), brush);
 
         private void Connect((double, double) p1, (double, double) p2, Brush brush)
             => Connect(p1.Item1, p1.Item2, p2.Item1, p2.Item2, brush);
@@ -176,10 +206,5 @@ namespace _3D_Rotation_Presenter
         public static double Half(this double num) => num / 2;
 
         public static double Abs(this double num) => Math.Abs(num);
-
-        public static Point Rotate(this Point p, double yaw, double pitch, double roll) => p
-            .Z_Rotate(yaw)
-            .Y_Rotate(pitch)
-            .X_Rotate(roll);
     }
 }
