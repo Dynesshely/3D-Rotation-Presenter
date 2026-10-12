@@ -20,6 +20,11 @@
             <Setter Property="TickFrequency" Value="15"/>
             <Setter Property="TickPlacement" Value="TopLeft"/>
         </Style>
+        <Style x:Key="Readout" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -38,70 +43,95 @@
                 ClipToBounds="True">
 
         </Canvas>
-        <StackPanel Grid.Column="1" Margin="20">
-            <Button x:Name="ClearButton"
-                    Margin="5"
-                    Click="ClearButton_Click"
-                    Content="Clear"/>
-            <Button x:Name="ForceDrawButton"
-                    Margin="5"
-                    Click="ForceDrawButton_Click"
-                    Content="Force Draw"/>
+        <ScrollViewer Grid.Column="1"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                <Label Margin="5" Content="Rotation Core"/>
+                <ComboBox x:Name="core_selector"
+                          Margin="5"
+                          SelectionChanged="Core_selector_SelectionChanged"/>
+                <TextBlock x:Name="core_readout"
+                           Style="{StaticResource Readout}"
+                           Foreground="DarkSlateBlue"/>
+                <TextBlock x:Name="state_readout"
+                           Style="{StaticResource Readout}"
+                           Foreground="DimGray"/>
 
-            <Label Margin="5" Content="Phone Width"/>
-            <TextBox x:Name="obj_width_input"
-                     Margin="5"
-                     Text="180"/>
+                <Separator Margin="5"/>
 
-            <Label Margin="5" Content="Phone Length"/>
-            <TextBox x:Name="obj_length_input"
-                     Margin="5"
-                     Text="320"/>
+                <Button x:Name="ClearButton"
+                        Margin="5"
+                        Click="ClearButton_Click"
+                        Content="Clear"/>
+                <Button x:Name="ForceDrawButton"
+                        Margin="5"
+                        Click="ForceDrawButton_Click"
+                        Content="Force Draw"/>
 
-            <Button x:Name="SetObjSizeButton"
-                    Margin="5"
-                    Click="SetObjSizeButton_Click"
-                    Content="Set"/>
+                <Label Margin="5" Content="Phone Width"/>
+                <TextBox x:Name="obj_width_input"
+                         Margin="5"
+                         Text="180"/>
 
-            <Label Margin="5" Content="Camera Height (0, 0, z)"/>
-            <TextBox x:Name="camera_input_height"
-                     Margin="5"
-                     Text="800"
-                     TextChanged="Camera_input_height_TextChanged"/>
+                <Label Margin="5" Content="Phone Length"/>
+                <TextBox x:Name="obj_length_input"
+                         Margin="5"
+                         Text="320"/>
 
-            <Button x:Name="ResetRotationButton"
-                    Margin="5"
-                    Click="ResetRotationButton_Click"
-                    Content="Reset Rotation"/>
+                <Button x:Name="SetObjSizeButton"
+                        Margin="5"
+                        Click="SetObjSizeButton_Click"
+                        Content="Set"/>
 
-            <Label Margin="5" Content="Yaw (Z)"/>
-            <Slider x:Name="yaw_slider"
-                    Style="{StaticResource RotateSlider}"
-                    ValueChanged="Rotation_Slider_ValueChanged"
-                    Value="0"/>
-            <TextBox Margin="5"
-                     IsReadOnly="True"
-                     Text="{Binding Value, ElementName=yaw_slider}"/>
+                <Label Margin="5" Content="Camera Height (0, 0, z)"/>
+                <TextBox x:Name="camera_input_height"
+                         Margin="5"
+                         Text="800"
+                         TextChanged="Camera_input_height_TextChanged"/>
 
-            <Label Margin="5" Content="Pitch (X)"/>
-            <Slider x:Name="pitch_slider"
-                    Style="{StaticResource RotateSlider}"
-                    ValueChanged="Rotation_Slider_ValueChanged"
-                    Value="0"/>
-            <TextBox Margin="5"
-                     IsReadOnly="True"
-                     Text="{Binding Value, ElementName=pitch_slider}"/>
+                <Button x:Name="ResetRotationButton"
+                        Margin="5"
+                        Click="ResetRotationButton_Click"
+                        Content="Reset Rotation"/>
 
-            <Label Margin="5" Content="Roll (Y)"/>
-            <Slider x:Name="roll_slider"
-                    Style="{StaticResource RotateSlider}"
-                    ValueChanged="Rotation_Slider_ValueChanged"
-                    Value="0"/>
-            <TextBox Margin="5"
-                     IsReadOnly="True"
-                     Text="{Binding Value, ElementName=roll_slider}"/>
+                <Label Margin="5" Content="Yaw (Z)"/>
+                <Slider x:Name="yaw_slider"
+                        Style="{StaticResource RotateSlider}"
+                        ValueChanged="Rotation_Slider_ValueChanged"
+                        Value="0"/>
+                <TextBox Margin="5"
+                         IsReadOnly="True"
+                         Text="{Binding Value, ElementName=yaw_slider}"/>
 
-            <Button Margin="5" Content="Rotate"/>
-        </StackPanel>
+                <Label Margin="5" Content="Pitch (X)"/>
+                <Slider x:Name="pitch_slider"
+                        Style="{StaticResource RotateSlider}"
+                        ValueChanged="Rotation_Slider_ValueChanged"
+                        Value="0"/>
+                <TextBox Margin="5"
+                         IsReadOnly="True"
+                         Text="{Binding Value, ElementName=pitch_slider}"/>
+
+                <Label Margin="5" Content="Roll (Y)"/>
+                <Slider x:Name="roll_slider"
+                        Style="{StaticResource RotateSlider}"
+                        ValueChanged="Rotation_Slider_ValueChanged"
+                        Value="0"/>
+                <TextBox Margin="5"
+                         IsReadOnly="True"
+                         Text="{Binding Value, ElementName=roll_slider}"/>
+
+                <Separator Margin="5"/>
+
+                <Button x:Name="VerifyCoresButton"
+                        Margin="5"
+                        Click="VerifyCoresButton_Click"
+                        Content="Verify Cores"/>
+                <TextBlock x:Name="verify_readout"
+                           Style="{StaticResource Readout}"
+                           Foreground="DimGray"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

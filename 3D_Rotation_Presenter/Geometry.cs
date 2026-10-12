@@ -1,81 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _3D_Rotation_Presenter;
 
+/// <summary>
+/// 三维三分量容器. 既可表示"点"(位置), 也可表示"向量"(方向 / 法向),
+/// 具体语义由派生类型区分: <see cref="Point"/> 与 <see cref="Vector3D"/>.
+/// </summary>
 public class Doubles_3
 {
-    private double x, y, z;
+    internal double X { get; set; }
 
-    internal double X
-    {
-        get => x;
-        set => x = value;
-    }
+    internal double Y { get; set; }
 
-    internal double Y
-    {
-        get => y;
-        set => y = value;
-    }
-
-    internal double Z
-    {
-        get => z;
-        set => z = value;
-    }
+    internal double Z { get; set; }
 }
 
 public class Point : Doubles_3 { }
 
-public class Vector3D : Doubles_3 { }
-
-public static partial class Extensions
+public class Vector3D : Doubles_3
 {
+    /// <summary>物体所在平面 (z = 0) 的正向法向量, 即始终朝向摄像机的那一面.</summary>
+    internal static Vector3D ScreenNormal => new() { X = 0, Y = 0, Z = 1 };
+}
 
-    public static Point Rotate(this Point p, (double, double, double) angles)
-        => p.Rotate(angles.Item1, angles.Item2, angles.Item3);
+public static class Extensions
+{
+    /// <summary>直线与平面视为平行时的分母阈值.</summary>
+    private const double ParallelEpsilon = 1e-5;
 
-    public static Point Rotate(this Point p, double yaw, double pitch, double roll) => p
-        .Z_Rotate(yaw)
-        .Y_Rotate(pitch)
-        .X_Rotate(roll);
+    public static double Half(this double num) => num / 2;
 
-    public static Point X_Rotate(this Point p, double alpha)
-    {
-        alpha *= Math.PI / 180;
-        return new()
-        {
-            X = Math.Cos(alpha) * p.X + Math.Sin(alpha) * p.Z,
-            Y = p.Y,
-            Z = -Math.Sin(alpha) * p.X + Math.Cos(alpha) * p.Z
-        };
-    }
+    public static double ToCenter(this double n, double relate, bool isY = false)
+        =>
+        isY
+        ?
+        (
+            n > 0
+            ?
+            relate.Half() - n
+            :
+            relate.Half() + Math.Abs(n)
+        )
+        :
+        (
+            n > 0
+            ?
+            relate.Half() + n
+            :
+            relate.Half() - Math.Abs(n)
+        );
 
-    public static Point Y_Rotate(this Point p, double beta)
-    {
-        beta *= Math.PI / 180;
-        return new()
-        {
-            X = p.X,
-            Y = Math.Cos(beta) * p.Y - Math.Sin(beta) * p.Z,
-            Z = Math.Sin(beta) * p.Y + Math.Cos(beta) * p.Z
-        };
-    }
-
-    public static Point Z_Rotate(this Point p, double gamma)
-    {
-        gamma *= Math.PI / 180;
-        return new()
-        {
-            X = Math.Cos(gamma) * p.X - Math.Sin(gamma) * p.Y,
-            Y = Math.Sin(gamma) * p.X + Math.Cos(gamma) * p.Y,
-            Z = p.Z
-        };
-    }
+    internal static double Dot(this Doubles_3 a, Doubles_3 b)
+        => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
 
     public static Vector3D GetDirection(this Point p1, Point p2) => new()
     {
@@ -85,7 +61,7 @@ public static partial class Extensions
     };
 
     /// <summary>
-    /// 求直线与平面交点
+    /// 求直线与平面交点 (本项目的透视投影就是它: 从被摄点朝摄像机连线, 与 z = 0 平面求交)
     /// </summary>
     /// <param name="p">已知直线上一点</param>
     /// <param name="camera">已知直线上另一点 (摄像机视角)</param>
@@ -130,33 +106,31 @@ public static partial class Extensions
         double vp1 = VP.X, vp2 = VP.Y, vp3 = VP.Z;
         double v1 = VL.X, v2 = VL.Y, v3 = VL.Z;
 
-        var t_base = vp1 * v1 + vp2 * v2 + vp3 * v3;
-        if (t_base - 0 <= 0.00001) return null;
-        else
+        var denominator = VP.Dot(VL);
+
+        //  分母为 0 表示直线与平面平行, 无交点;
+        //  分母为负表示可以求得交点, 但交点在摄像机的另一侧 (被摄点已经越过了摄像机所在平面), 同样无法成像.
+        //  两种情况都丢弃该点, 由调用方决定线段的取舍.
+        if (denominator <= ParallelEpsilon) return null;
+
+        n ??= new()
         {
-            n ??= new()
-            {
-                X = 0,
-                Y = 0,
-                Z = 0
-            };
+            X = 0,
+            Y = 0,
+            Z = 0
+        };
 
-            double n1 = n.X, n2 = n.Y, n3 = n.Z;
-            double p1 = p.X, p2 = p.Y, p3 = p.Z;
+        double n1 = n.X, n2 = n.Y, n3 = n.Z;
+        double p1 = p.X, p2 = p.Y, p3 = p.Z;
 
-            var t_devide = (n1 - p1) * vp1 + (n2 - p2) * vp2 + (n3 - p3) * vp3;
-            var t = t_devide / t_base;
+        var numerator = (n1 - p1) * vp1 + (n2 - p2) * vp2 + (n3 - p3) * vp3;
+        var t = numerator / denominator;
 
-            var x = p1 + v1 * t;
-            var y = p2 + v2 * t;
-            var z = p3 + v3 * t;
-
-            return new()
-            {
-                X = x,
-                Y = y,
-                Z = z
-            };
-        }
+        return new()
+        {
+            X = p1 + v1 * t,
+            Y = p2 + v2 * t,
+            Z = p3 + v3 * t
+        };
     }
 }
